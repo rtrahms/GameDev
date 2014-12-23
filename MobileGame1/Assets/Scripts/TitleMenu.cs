@@ -4,12 +4,20 @@ using System.Collections;
 public class TitleMenu : MonoBehaviour {
 
 	public GUISkin skin;
+	private AdMobHandler admobHandler;
 	
+#if UNITY_ANDROID
+	//private AdMobHandler admob;
+#endif
+		
 	void Start()
 	{
-
+#if UNITY_ANDROID
+		//admob = GameObject.Instantiate (admobHandler) as AdMobHandler;
+		admobHandler = GameObject.FindObjectOfType<AdMobHandler>();	
+#endif
 	}
-	
+		
 	void OnGUI()
 	{
 		GUI.skin = skin;
@@ -36,6 +44,11 @@ public class TitleMenu : MonoBehaviour {
 		}
 		if (GUI.Button(new Rect(10,100,200,45), "New Game"))
 		{
+#if UNITY_ANDROID
+			// pop up an Ad first
+			admobHandler.ShowInterstitialAd();
+#endif
+			
 			PlayerPrefs.SetInt ("CurrentLevel",1);
 			PlayerPrefs.SetFloat ("CurrentScore",0.0f);
 			
@@ -60,4 +73,5 @@ public class TitleMenu : MonoBehaviour {
 			Application.Quit();
 		}
 	}
+	
 }
